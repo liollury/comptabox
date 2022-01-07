@@ -1,0 +1,19 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  min-width: 500px;
+  .row {
+    display: flex;
+    flex-direction: row;
+    & > * {
+      flex: 1;
+    }
+    & > *:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  .planned {
+    margin-bottom: 10px;
+  }
+}

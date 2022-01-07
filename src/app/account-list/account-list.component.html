@@ -1,0 +1,21 @@
+<mat-nav-list>
+  <ng-container *ngIf="accountGroups$ | async as accountGroups">
+    <div *ngFor="let accountGroup of accountGroups">
+      <div class="header">
+        <h2 class="name">{{AccountTypeI18N[accountGroup.type]}}</h2>
+        <div class="amount total">Solde pointé</div>
+        <div class="amount total">Solde fin de mois</div>
+      </div>
+      <a mat-list-item [routerLink]="['/account', account.documentId]" *ngFor="let account of accountGroup.accounts">
+        <div class="name">{{account.name}}</div>
+        <div class="amount curr">{{account.pointedAmount | currency}}</div>
+        <div class="amount prev">{{account.theoricalAmount | currency}}</div>
+      </a>
+      <mat-list-item>
+        <div class="name"></div>
+        <div class="amount total">{{getPointedTotal(accountGroup) | currency}}</div>
+        <div class="amount total">{{getTheoricalTotal(accountGroup) | currency}}</div>
+      </mat-list-item>
+    </div>
+  </ng-container>
+</mat-nav-list>

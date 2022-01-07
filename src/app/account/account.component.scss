@@ -1,0 +1,115 @@
+@mixin icon-size($size) {
+  font-size: $size;
+  width: $size;
+  height: $size;
+}
+
+.account-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  border: 1px solid lightgrey;
+  margin: 30px 20px;
+  padding: 24px;
+
+  h1 {
+    color: #673ab7;
+    font-weight: 500;
+  }
+
+  .bold {
+    font-weight: 500;
+  }
+
+  .rapprocher {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #673ab7;
+    cursor: pointer;
+    .mat-icon {
+      @include icon-size(18px);
+    }
+  }
+
+  .solde {
+    font-size: 1.8em;
+    .positive {
+      color: green;
+    }
+    .negative {
+      color: red;
+    }
+  }
+}
+
+.actions-container {
+  display: flex;
+  margin: 20px;
+}
+
+h2 {
+  margin: 40px 0 0 20px;
+}
+
+.table {
+  width: 100%;
+
+  .mat-column-date, .mat-column-amount {
+    width: 10%;
+  }
+
+
+  .mat-column-pointed {
+    width: 5%;
+  }
+
+  .mat-column-globalAmount {
+    width: 10%;
+  }
+
+  .mat-column-actions {
+    width: 5%;
+  }
+
+  .mat-column-description, .mat-column-type {
+    width: 30%;
+  }
+
+  tr:nth-child(even) {
+    background-color: #fcfcfc;
+  }
+
+  td {
+    font-size: 0.90em;
+
+    &.negative {
+      color: red;
+    }
+
+    &.positive {
+      color: green;
+      &.amount {
+        text-align: right;
+        padding-right: 30px;
+      }
+    }
+
+    &.bold {
+      font-weight: 500;
+    }
+
+    .to {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      color: cadetblue;
+      font-size: 0.85em;
+      .mat-icon {
+        margin-right: 5px;
+        @include icon-size(20px);
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+<h1>Rapprocher</h1>
+<div>
+  <span>Solde actuellement pointé : <strong>{{data.amount | currency}}</strong></span>
+</div>
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Solde sur le compte</mat-label>
+    <input matInput type="number" [(ngModel)]="realAmount" />
+  </mat-form-field>
+</div>
+<div class="actions">
+  <button mat-button color="primary" (click)="cancel()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="confirm()">Valider</button>
+</div>

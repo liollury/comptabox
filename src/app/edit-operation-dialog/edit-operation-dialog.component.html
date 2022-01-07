@@ -1,0 +1,93 @@
+<h1>{{dialogData.action === 'UPDATE' ? 'Modifier l\'operation' : 'Ajouter une operation'}}</h1>
+<form class="form" [formGroup]="form">
+  <mat-form-field appearance="fill">
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <div class="row">
+    <mat-form-field appearance="fill">
+      <mat-label>Opération</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="CB">Carte Bancaire</mat-option>
+        <mat-option value="CHECK">Chèque</mat-option>
+        <mat-option value="CASH">Cash</mat-option>
+        <mat-option value="LEVY">Prélèvement</mat-option>
+        <mat-option value="TRANSFER">Virement</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Vers</mat-label>
+      <mat-select formControlName="accountRef">
+        <mat-option [value]="null">Aucun</mat-option>
+        <mat-option *ngFor="let account of dialogData.accounts | keyvalue" [value]="account.key">{{account.value}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Statut</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="NOT_POINTED">Non pointé</mat-option>
+        <mat-option value="POINTED">Pointé</mat-option>
+        <mat-option value="CLOSED">Rapproché</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="fill">
+      <mat-label>Montant</mat-label>
+      <input matInput type="number" formControlName="amount" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="way">
+        <mat-option value="DEBIT">Débit</mat-option>
+        <mat-option value="CREDIT">Crédit</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="fill">
+      <mat-label>Catégorie</mat-label>
+      <mat-select formControlName="category">
+        <mat-option [value]="null">Aucune</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Sous-catégorie</mat-label>
+      <mat-select formControlName="subcategory">
+        <mat-option [value]="null">Aucune</mat-option>
+        <mat-option *ngFor="let subCategory of subCategories" [value]="subCategory.id">{{subCategory.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Libellé</mat-label>
+    <input matInput type="text" formControlName="info" />
+  </mat-form-field>
+
+  <div class="planned" *ngIf="dialogData.action !== 'UPDATE'">
+    <mat-slide-toggle formControlName="planned">
+      Recurrence
+    </mat-slide-toggle>
+    <div *ngIf="plannedFormControl.value" class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Date d'ajout au compte</mat-label>
+        <input matInput [matDatepicker]="addToAccountAtPicker" formControlName="addToAccountAt">
+        <mat-datepicker-toggle matSuffix [for]="addToAccountAtPicker"></mat-datepicker-toggle>
+        <mat-datepicker #addToAccountAtPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <button mat-raised-button color="primary" (click)="save()">{{dialogData.action === 'UPDATE' ? 'Modifier' : 'Ajouter'}}</button>
+</form>

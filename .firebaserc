@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "comptabox-5ddc3": {
+      "hosting": {
+        "comptabox": [
+          "comptabox-5ddc3"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "comptabox-5ddc3"
+  }
+}

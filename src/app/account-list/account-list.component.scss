@@ -1,0 +1,56 @@
+@import '~@angular/material/theming';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .mat-nav-list {
+    width: 100%;
+    max-width: 600px;
+    margin: 30px 0;
+    padding: 10px 30px;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+
+    h2 {
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .header {
+      padding: 0 16px;
+      height: 48px;
+    }
+
+    ::ng-deep .mat-list-item-content, .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2px;
+      font-size: 0.90em;
+      .name {
+        flex: 1;
+      }
+      .amount {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        height: 100%;
+        border-radius: 4px;
+        &.total {
+          font-weight: 500;
+        }
+        &.curr {
+          background-color: #f1f1f1;
+        }
+        &.prev {
+          background-color: lighten(#673ab7, 20%);
+          color: white;
+        }
+      }
+    }
+  }
+}
