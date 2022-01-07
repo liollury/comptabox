@@ -33,6 +33,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppDatePipe } from './pipe/date.pipe';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgxSerializerModule } from '@witty-services/ngx-serializer';
+import { LoginComponent } from './login/login.component';
+import { AngularFireAuthModule, PERSISTENCE } from '@angular/fire/compat/auth';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -43,7 +45,8 @@ registerLocaleData(localeFr, 'fr');
     AccountComponent,
     EditOperationDialogComponent,
     CloseOperationDialogComponent,
-    AppDatePipe
+    AppDatePipe,
+    LoginComponent
   ],
   imports: [
     CommonModule,
@@ -55,6 +58,7 @@ registerLocaleData(localeFr, 'fr');
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
+    AngularFireAuthModule,
     MatListModule,
     MatButtonModule,
     MatToolbarModule,
@@ -70,6 +74,10 @@ registerLocaleData(localeFr, 'fr');
     MatSlideToggleModule
   ],
   providers: [
+    {
+      provide: PERSISTENCE,
+      useValue: 'local'
+    },
     {
       provide: MAT_DATE_LOCALE,
       useValue: 'fr-FR'
