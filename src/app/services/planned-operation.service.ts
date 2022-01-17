@@ -40,6 +40,7 @@ export class PlannedOperationService {
       this.metadataService.getMetadata(),
       this.getPlannedOperation()
     ]).pipe(
+      take(1),
       switchMap(([metadata, plannedOperations]: [Metadata, PlannedOperation[]]) => {
         if (!metadata || !plannedOperations || plannedOperations.length === 0) {
           return of(null);
