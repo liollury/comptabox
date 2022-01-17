@@ -46,7 +46,11 @@
 
 .actions-container {
   display: flex;
+  align-items: center;
   margin: 20px;
+  & > * {
+    margin-right: 10px;
+  }
 }
 
 h2 {

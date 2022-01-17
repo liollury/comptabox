@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountService } from '../services/account.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable, of, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, of, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 import { Account } from '../models/account.model';
 import { Operation, OperationStatus, OperationTypeI18N } from '../models/operation.model';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,10 +10,14 @@ import { CategoriesService } from '../services/categories.service';
 import { Category } from '../models/category.model';
 import { CloseOperationDialogComponent } from '../close-operation-dialog/close-operation-dialog.component';
 import { floatHack } from '../utils/number.util';
-import { Dayjs } from 'dayjs';
 import * as dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { PlannedOperation } from '../models/planned-operation.model';
 import { PlannedOperationService } from '../services/planned-operation.service';
+
+class OperationFilter {
+  pointedOperationFilter: boolean;
+}
 
 @Component({
   selector: 'app-account',
@@ -34,6 +38,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   accountAmount: number;
   closedAmount: number;
   months: Dayjs[] = [];
+  filter$: BehaviorSubject<OperationFilter> = new BehaviorSubject<OperationFilter>({pointedOperationFilter: false});
 
   constructor(
     protected accountService: AccountService,
@@ -53,13 +58,13 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.operations$ = this.accountService.getAccount(this.accountDocumentId).pipe(
       takeUntil(this.onDestroy$),
       tap((account: Account | undefined) => this.accountAmount = account?.amount || 0),
-      switchMap((account: Account | undefined) => account ? this.accountService.getAccountOperations(account): of([])),
-      tap((operations: Operation[]) => this.calculatePointedAmount(operations)),
-      tap((operations: Operation[]) => this.calculateTheoricalAmount(operations)),
-      tap((operations: Operation[]) => this.calculateClosedAmount(operations)),
-      tap((operations: Operation[]) => this.computedMonths(operations)),
-      switchMap((operations: Operation[]) =>
-        this.accountService.updateAccountAmounts(this.accountDocumentId, this.pointedAmount, this.theoricalAmount).pipe(map(() => operations))
+      switchMap((account: Account | undefined) => combineLatest([account ? this.accountService.getAccountOperations(account): of([]), this.filter$])),
+      tap(([operations, filter]: [Operation[], OperationFilter]) => this.calculatePointedAmount(operations)),
+      tap(([operations, filter]: [Operation[], OperationFilter]) => this.calculateTheoricalAmount(operations)),
+      tap(([operations, filter]: [Operation[], OperationFilter]) => this.calculateClosedAmount(operations)),
+      tap(([operations, filter]: [Operation[], OperationFilter]) => this.computedMonths(operations)),
+      switchMap(([operations, filter]: [Operation[], OperationFilter]) =>
+        this.accountService.updateAccountAmounts(this.accountDocumentId, this.pointedAmount, this.theoricalAmount).pipe(map(() => this.filterOperation(operations, filter)))
       )
     );
   }
@@ -67,6 +72,13 @@ export class AccountComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.onDestroy$.next(void 0);
     this.onDestroy$.complete();
+  }
+
+  filterOperation(operations: Operation[], filter: OperationFilter): Operation[] {
+    if (filter.pointedOperationFilter) {
+      return operations.filter((operation: Operation) => operation.status === OperationStatus.NOT_POINTED);
+    }
+    return operations;
   }
 
   computedMonths(operations: Operation[]) {
