@@ -2,30 +2,32 @@
 <form class="form" [formGroup]="form">
   <mat-form-field appearance="fill">
     <mat-label>Date</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="date">
+    <input matInput [matDatepicker]="picker" formControlName="date" (click)="picker.open()">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
   <div class="row">
-    <mat-form-field appearance="fill">
-      <mat-label>Opération</mat-label>
-      <mat-select formControlName="type">
-        <mat-option value="CB">Carte Bancaire</mat-option>
-        <mat-option value="CHECK">Chèque</mat-option>
-        <mat-option value="CASH">Cash</mat-option>
-        <mat-option value="LEVY">Prélèvement</mat-option>
-        <mat-option value="TRANSFER">Virement</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="row rowForMobile">
+      <mat-form-field appearance="fill">
+        <mat-label>Opération</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="CB">Carte Bancaire</mat-option>
+          <mat-option value="CHECK">Chèque</mat-option>
+          <mat-option value="CASH">Cash</mat-option>
+          <mat-option value="LEVY">Prélèvement</mat-option>
+          <mat-option value="TRANSFER">Virement</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Vers</mat-label>
-      <mat-select formControlName="accountRef">
-        <mat-option [value]="null">Aucun</mat-option>
-        <mat-option *ngFor="let account of dialogData.accounts | keyvalue" [value]="account.key">{{account.value}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Vers</mat-label>
+        <mat-select formControlName="accountRef">
+          <mat-option [value]="null">Aucun</mat-option>
+          <mat-option *ngFor="let account of dialogData.accounts | keyvalue" [value]="account.key">{{account.value}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
     <mat-form-field appearance="fill">
       <mat-label>Statut</mat-label>
@@ -37,10 +39,10 @@
     </mat-form-field>
   </div>
 
-  <div class="row">
+  <div class="row rowForMobile">
     <mat-form-field appearance="fill">
       <mat-label>Montant</mat-label>
-      <input matInput type="number" formControlName="amount" />
+      <input matInput type="number" formControlName="amount" (blur)="formatAmount()" />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -52,7 +54,7 @@
     </mat-form-field>
   </div>
 
-  <div class="row">
+  <div class="row rowForMobile">
     <mat-form-field appearance="fill">
       <mat-label>Catégorie</mat-label>
       <mat-select formControlName="category">

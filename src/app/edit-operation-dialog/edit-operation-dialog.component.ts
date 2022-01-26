@@ -1,22 +1,24 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Operation, OperationStatus, OperationType } from '../models/operation.model';
 import * as dayjs from 'dayjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Category } from '../models/category.model';
 import { PlannedOperation } from '../models/planned-operation.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-edit-operation-dialog',
   templateUrl: './edit-operation-dialog.component.html',
   styleUrls: ['./edit-operation-dialog.component.scss']
 })
-export class EditOperationDialogComponent implements OnInit {
+export class EditOperationDialogComponent implements OnInit, OnDestroy {
   form: FormGroup;
   categories: Category[];
   subCategories: Category[];
   prefilledSubCat: number | null;
   dialogData: {categories: Category[], operation: Operation, accounts: Map<string, string>, action: string};
+  onDestroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private dialogRef: MatDialogRef<EditOperationDialogComponent>,
@@ -59,6 +61,18 @@ export class EditOperationDialogComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
+  formatAmount() {
+    const value: string = this.form.controls['amount'].value;
+    if (parseFloat(value).toString(10) !== value) {
+      this.form.controls['amount'].setValue(parseFloat(value).toString(10));
+    }
+  }
+
   listenCategoryChange() {
     this.form.controls['category'].valueChanges.subscribe((categoryId) => {
       this.form.controls['subcategory'].setValue(this.prefilledSubCat);
@@ -85,7 +99,7 @@ export class EditOperationDialogComponent implements OnInit {
   save() {
     if (this.form.valid) {
       const operation = this.form.value;
-      operation.amount = Math.abs(operation.amount);
+      operation.amount = Math.abs(parseFloat(operation.amount));
       if (operation.way === 'DEBIT') {
         operation.amount = -operation.amount;
       }

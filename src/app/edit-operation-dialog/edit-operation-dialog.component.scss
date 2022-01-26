@@ -1,15 +1,35 @@
+@import "../../css/breakpoints";
+
 .form {
   display: flex;
   flex-direction: column;
-  min-width: 500px;
+  width: 100%;
+  @include breakpoint(tablet) {
+    min-width: 500px;
+  }
   .row {
     display: flex;
     flex-direction: row;
+    &:not(.rowForMobile) {
+      @include breakpoint(mobileonly) {
+        flex-direction: column;
+        & > *:not(:last-child) {
+          margin-right: 0;
+        }
+      }
+    }
     & > * {
       flex: 1;
+      ::ng-deep .mat-form-field-infix {
+        width: auto;
+      }
     }
     & > *:not(:last-child) {
       margin-right: 10px;
+    }
+
+    .row {
+      flex: 2;
     }
   }
 

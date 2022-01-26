@@ -1,4 +1,5 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import './css/_breakpoints.scss';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -9,4 +10,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 a {
   text-decoration: none;
+}
+
+.fullWidthForMobile {
+  @include breakpoint(mobileonly) {
+    max-width: 100% !important;
+    width: 100%;
+  }
 }

@@ -134,6 +134,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   openOperationDialog(action: 'CREATE' | 'UPDATE' | 'CLONE', referenceOperation?: Operation): void {
     const dialogRef = this.dialog.open(EditOperationDialogComponent, {
+      panelClass: 'fullWidthForMobile',
       data: {
         categories: this.categories,
         accounts: this.accountsNameMap,
