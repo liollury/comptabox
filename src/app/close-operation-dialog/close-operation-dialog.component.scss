@@ -4,5 +4,11 @@
   align-items: center;
   div {
     margin-top: 20px;
+    &.amount {
+      width: 100%;
+      .mat-form-field {
+        width: 100%;
+      }
+    }
   }
 }

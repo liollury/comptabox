@@ -2,10 +2,10 @@
 <div>
   <span>Solde actuellement pointé : <strong>{{data.amount | currency}}</strong></span>
 </div>
-<div>
+<div class="amount">
   <mat-form-field appearance="fill">
     <mat-label>Solde sur le compte</mat-label>
-    <input matInput type="number" [(ngModel)]="realAmount" />
+    <input matInput type="number" [(ngModel)]="realAmount" (blur)="formatAmount()" />
   </mat-form-field>
 </div>
 <div class="actions">

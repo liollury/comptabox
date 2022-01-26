@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Operation } from '../models/operation.model';
 
 @Component({
   selector: 'app-close-operation-dialog',
@@ -8,7 +7,7 @@ import { Operation } from '../models/operation.model';
   styleUrls: ['./close-operation-dialog.component.scss']
 })
 export class CloseOperationDialogComponent implements OnInit {
-  realAmount: number;
+  realAmount: string;
 
   constructor(
     private dialogRef: MatDialogRef<CloseOperationDialogComponent>,
@@ -20,11 +19,17 @@ export class CloseOperationDialogComponent implements OnInit {
   }
 
   confirm() {
-    this.dialogRef.close(this.realAmount);
+    this.dialogRef.close(parseFloat(this.realAmount));
   }
 
   cancel() {
     this.dialogRef.close();
+  }
+
+  formatAmount() {
+    if (parseFloat(this.realAmount).toString(10) !== this.realAmount) {
+      this.realAmount = parseFloat(this.realAmount).toString(10);
+    }
   }
 
 }
