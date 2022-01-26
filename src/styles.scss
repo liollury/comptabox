@@ -1,7 +1,10 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import './css/_breakpoints.scss';
 
-html, body { height: 100%; }
+html, body {
+  height: 100%;
+  background-color: #fafafa;
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-icon.green {

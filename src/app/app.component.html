@@ -1,7 +1,21 @@
-<mat-toolbar>
-  <button mat-icon-button>
-    <mat-icon>menu</mat-icon>
-  </button>
-  Comptabox
-</mat-toolbar>
-<router-outlet></router-outlet>
+<mat-drawer-container autosize>
+  <mat-drawer #drawer mode="push">
+    <button mat-raised-button>
+      Toggle extra text
+    </button>
+  </mat-drawer>
+
+  <mat-toolbar>
+    <button mat-icon-button (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    Comptabox
+  </mat-toolbar>
+
+  <router-outlet></router-outlet>
+
+</mat-drawer-container>
+
+
+
+

@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgxSerializerModule } from '@witty-services/ngx-serializer';
 import { LoginComponent } from './login/login.component';
 import { AngularFireAuthModule, PERSISTENCE } from '@angular/fire/compat/auth';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -71,7 +72,8 @@ registerLocaleData(localeFr, 'fr');
     MatCheckboxModule,
     MatIconModule,
     MatMenuModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSidenavModule
   ],
   providers: [
     {

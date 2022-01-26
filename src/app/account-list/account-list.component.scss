@@ -1,16 +1,21 @@
 @import '~@angular/material/theming';
+@import '../../css/breakpoints';
 
 :host {
   display: flex;
   flex-direction: column;
   align-items: center;
   .mat-nav-list {
-    width: 100%;
+    width: calc(100% - 2px); // substract border width
     max-width: 600px;
     margin: 30px 0;
-    padding: 10px 30px;
+    padding: 10px 0;
     border: 1px solid lightgrey;
     border-radius: 4px;
+
+    @include breakpoint(phablet) {
+      padding: 10px 30px;
+    }
 
     h2 {
       font-weight: 500;
