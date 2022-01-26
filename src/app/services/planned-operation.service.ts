@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { combineLatest, from, map, merge, Observable, of, switchMap, take } from 'rxjs';
+import { combineLatest, from, map, merge, Observable, of, shareReplay, switchMap, take } from 'rxjs';
 import { Operation, OperationStatus } from '../models/operation.model';
 import { PlannedOperation } from '../models/planned-operation.model';
 import { MetadataService } from './metadata.service';
@@ -28,17 +28,26 @@ export class PlannedOperationService {
     return from(this.db.collection<Operation>(`plannedOperations`).add(this.serializer.serialize(operation)));
   }
 
-  getPlannedOperation(): Observable<any> {
-    return from(this.db.collection<Operation>(`plannedOperations`).valueChanges()).pipe(
+  getPlannedOperations(): Observable<any> {
+    return from(this.db.collection<Operation>(`plannedOperations`).valueChanges({idField: 'documentId'})).pipe(
       map((plannedOperationsObj: any[]) => this.serializer.deserializeAll(PlannedOperation, plannedOperationsObj)),
-      take(1)
+      shareReplay(1)
     );
   }
+
+  updatePlannedOperation(operation: PlannedOperation): Observable<any> {
+    return from(this.db.doc<Operation>(`plannedOperations/${operation.documentId}`).set(this.serializer.serialize(operation)));
+  }
+
+  deletePlannedOperation(operation: PlannedOperation): Observable<any> {
+    return from(this.db.doc<Operation>(`plannedOperations/${operation.documentId}`).delete());
+  }
+
 
   performPlannedOperations() {
     combineLatest([
       this.metadataService.getMetadata(),
-      this.getPlannedOperation()
+      this.getPlannedOperations().pipe(take(1))
     ]).pipe(
       take(1),
       switchMap(([metadata, plannedOperations]: [Metadata, PlannedOperation[]]) => {

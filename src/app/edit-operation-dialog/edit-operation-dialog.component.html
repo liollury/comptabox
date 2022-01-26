@@ -1,4 +1,4 @@
-<h1>{{dialogData.action === 'UPDATE' ? 'Modifier l\'operation' : 'Ajouter une operation'}}</h1>
+<h1>{{dialogData.action === 'UPDATE' || dialogData.action === 'UPDATE_PLANNED' ? 'Modifier l\'operation' : 'Ajouter une operation'}}</h1>
 <form class="form" [formGroup]="form">
   <mat-form-field appearance="fill">
     <mat-label>Date</mat-label>
@@ -91,5 +91,5 @@
     </div>
   </div>
 
-  <button mat-raised-button color="primary" (click)="save()">{{dialogData.action === 'UPDATE' ? 'Modifier' : 'Ajouter'}}</button>
+  <button mat-raised-button color="primary" (click)="save()">{{dialogData.action === 'UPDATE' || dialogData.action === 'UPDATE_PLANNED' ? 'Modifier' : 'Ajouter'}}</button>
 </form>

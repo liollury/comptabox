@@ -4,6 +4,7 @@ import { AccountComponent } from './account/account.component';
 import { AngularFireAuthGuard } from '@angular/fire/compat/auth-guard';
 import { LoginComponent } from './login/login.component';
 import { redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+import { PlannedOperationListComponent } from './planned-operation-list/planned-operation-list.component';
 
 const accountList: Route = {
   path: 'list',
@@ -17,6 +18,15 @@ const accountList: Route = {
 const account: Route = {
   path: 'account/:id',
   component: AccountComponent,
+  canActivate: [AngularFireAuthGuard],
+  data: {
+    authGuardPipe: () => redirectUnauthorizedTo(['login'])
+  }
+};
+
+const plannedOperationList: Route = {
+  path: 'planned-operations',
+  component: PlannedOperationListComponent,
   canActivate: [AngularFireAuthGuard],
   data: {
     authGuardPipe: () => redirectUnauthorizedTo(['login'])
@@ -37,4 +47,4 @@ const defaultRoute: Route = {
   redirectTo: '/list'
 };
 
-export const routes: Routes = [accountList, account, login, defaultRoute];
+export const routes: Routes = [accountList, plannedOperationList, account, login, defaultRoute];

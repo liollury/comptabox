@@ -127,7 +127,6 @@ export class AccountService {
               ref => ref.where('operationRef', '==', operation.operationRef)
           ).get().pipe(
             switchMap((operations) => {
-              console.log(operations);
               return merge([of(null), ...operations.docs.map((operation) => from(operation.ref.delete()))]);
             })
           );

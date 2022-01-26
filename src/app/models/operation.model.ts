@@ -2,6 +2,7 @@ import * as dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
 import { JsonProperty } from '@witty-services/ts-serializer';
 import { FirestoreTimestampToDayjsConverter } from '../converters/firestore-timestamp-to-dayjs.converter';
+import { Category } from './category.model';
 
 export enum OperationType {
   CB = 'CB',
@@ -57,7 +58,7 @@ export class Operation {
   accountRef: string;
 
   @JsonProperty()
-  operationRef: number;
+  operationRef?: number;
 
   constructor(partial: Partial<Operation>) {
     Object.assign(this, partial);
@@ -66,4 +67,18 @@ export class Operation {
     }
   }
 
+  static formatCategory(operation: Operation, categories: Category[]): string {
+    let categoryString = '';
+    if (operation.category) {
+      const category = categories.find((category) => category.id === operation.category);
+      categoryString = category?.name || '';
+      if (operation.subcategory && category) {
+        const subCategory = category.subCategories?.find((subCategory) => operation.subcategory === subCategory.id);
+        if (subCategory) {
+          categoryString = subCategory.name;
+        }
+      }
+    }
+    return categoryString;
+  }
 }

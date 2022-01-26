@@ -1,48 +1,6 @@
 @import "../../css/breakpoints";
 @import "../../css/icons";
 
-.account-section {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
-  border: 1px solid lightgrey;
-  margin: 30px 20px;
-  padding: 24px 0;
-  @include breakpoint(phablet) {
-    padding: 24px;
-  }
-
-  h1 {
-    color: #673ab7;
-    font-weight: 500;
-  }
-
-  .bold {
-    font-weight: 500;
-  }
-
-  .rapprocher {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    color: #673ab7;
-    cursor: pointer;
-    .mat-icon {
-      @include icon-size(18px);
-    }
-  }
-
-  .solde {
-    font-size: 1.8em;
-    .positive {
-      color: green;
-    }
-    .negative {
-      color: red;
-    }
-  }
-}
 
 .actions-container {
   display: flex;

@@ -15,6 +15,13 @@
         Liste des comptes
       </a>
 
+      <a mat-list-item
+         [routerLink]="['/planned-operations']"
+         routerLinkActive="list-item-active">
+        <mat-icon matListIcon> schedule </mat-icon>
+        Opérations plannifiées
+      </a>
+
       <ng-container *ngIf="accountGroups$ | async as accountGroups">
         <div *ngFor="let accountGroup of accountGroups">
           <h3 matSubheader>{{AccountTypeI18N[accountGroup.type]}}</h3>

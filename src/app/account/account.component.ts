@@ -26,6 +26,7 @@ import * as dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
 import { PlannedOperation } from '../models/planned-operation.model';
 import { PlannedOperationService } from '../services/planned-operation.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 class OperationFilter {
   pointedOperationFilter: boolean;
@@ -42,7 +43,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   displayedColumns = ['date', 'description', 'type', 'amount', 'pointed', 'globalAmount', 'actions'];
   accountDocumentId: string;
   operations$: Observable<Operation[]>;
-  categories: Category[];
+  categories: Category[] = [];
   accountsNameMap: Map<string, string>;
   onDestroy$ = new Subject();
   pointedAmount: number;
@@ -119,18 +120,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   getCategory(operation: Operation): string {
-    let categoryString = '';
-    if (operation.category) {
-      const category = this.categories.find((category) => category.id === operation.category);
-      categoryString = category?.name || '';
-      if (operation.subcategory && category) {
-        const subCategory = category.subCategories?.find((subCategory) => operation.subcategory === subCategory.id);
-        if (subCategory) {
-          categoryString = subCategory.name;
-        }
-      }
-    }
-    return categoryString;
+    return Operation.formatCategory(operation, this.categories);
   }
 
   closeOperationDialog() {
@@ -189,7 +179,14 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   deleteOperation(operation: Operation) {
-    this.accountService.deleteOperation(this.accountDocumentId, operation);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      panelClass: 'fullWidthForMobile'
+    });
+    dialogRef.afterClosed().subscribe((isYes: boolean) => {
+      if (isYes) {
+        this.accountService.deleteOperation(this.accountDocumentId, operation);
+      }
+    });
   }
 
   operationForMonth(operations: Operation[], month: Dayjs) {

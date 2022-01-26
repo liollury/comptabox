@@ -36,6 +36,8 @@ import { NgxSerializerModule } from '@witty-services/ngx-serializer';
 import { LoginComponent } from './login/login.component';
 import { AngularFireAuthModule, PERSISTENCE } from '@angular/fire/compat/auth';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { PlannedOperationListComponent } from './planned-operation-list/planned-operation-list.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -47,7 +49,9 @@ registerLocaleData(localeFr, 'fr');
     EditOperationDialogComponent,
     CloseOperationDialogComponent,
     AppDatePipe,
-    LoginComponent
+    LoginComponent,
+    PlannedOperationListComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     CommonModule,

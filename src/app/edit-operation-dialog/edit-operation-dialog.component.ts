@@ -56,7 +56,8 @@ export class EditOperationDialogComponent implements OnInit, OnDestroy {
         ...this.dialogData.operation,
         date: this.dialogData.operation.date,
         amount: Math.abs(this.dialogData.operation.amount),
-        way: this.dialogData.operation.amount < 0 ? 'DEBIT': 'CREDIT'
+        way: this.dialogData.operation.amount < 0 ? 'DEBIT': 'CREDIT',
+        planned: this.dialogData.action === 'UPDATE_PLANNED'
       });
     }
   }
