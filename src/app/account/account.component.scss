@@ -1,3 +1,5 @@
+@import "../../css/breakpoints";
+
 @mixin icon-size($size) {
   font-size: $size;
   width: $size;
@@ -11,7 +13,10 @@
   align-items: flex-end;
   border: 1px solid lightgrey;
   margin: 30px 20px;
-  padding: 24px;
+  padding: 24px 0;
+  @include breakpoint(phablet) {
+    padding: 24px;
+  }
 
   h1 {
     color: #673ab7;
@@ -62,6 +67,7 @@ h2 {
 
   .mat-column-date, .mat-column-amount {
     width: 10%;
+    font-weight: 500;
   }
 
 
@@ -85,6 +91,16 @@ h2 {
     background-color: #fcfcfc;
   }
 
+  td, th {
+    @include breakpoint(mobileonly) {
+      ::ng-deep &.mat-cell, ::ng-deep &.mat-header-cell {
+        &:first-of-type, &:last-of-type {
+          padding: 0;
+        }
+      }
+    }
+  }
+
   td {
     font-size: 0.90em;
 
@@ -96,7 +112,9 @@ h2 {
       color: green;
       &.amount {
         text-align: right;
-        padding-right: 30px;
+        @include breakpoint(phablet) {
+          padding-right: 30px;
+        }
       }
     }
 

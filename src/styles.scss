@@ -18,3 +18,15 @@ a {
     width: 100%;
   }
 }
+
+@include breakpoint(phablet) {
+  .mobile {
+    display: none;
+  }
+}
+
+@include breakpoint(mobileonly) {
+  .desktop {
+    display: none;
+  }
+}
