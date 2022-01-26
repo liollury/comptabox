@@ -1,7 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountService } from '../services/account.service';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, combineLatest, map, Observable, of, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  filter,
+  map,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  take,
+  takeUntil,
+  tap
+} from 'rxjs';
 import { Account } from '../models/account.model';
 import { Operation, OperationStatus, OperationTypeI18N } from '../models/operation.model';
 import { MatDialog } from '@angular/material/dialog';
@@ -51,12 +63,15 @@ export class AccountComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // this.categoriesService.generateCategories();
     this.categoriesService.getCategories().subscribe((categories) => this.categories = categories);
-    this.accountDocumentId = this.route.snapshot.params['id'];
     this.accountService.getAccounts().pipe(take(1)).subscribe((accounts) => {
       this.accountsNameMap = new Map(accounts.map((account) => [account.documentId, account.name]));
     });
-    this.operations$ = this.accountService.getAccount(this.accountDocumentId).pipe(
+    // @ts-ignore
+    this.operations$ = this.route.params.pipe(
       takeUntil(this.onDestroy$),
+      filter((params: any) => !!params['id']),
+      tap((params: any) => this.accountDocumentId = params['id']),
+      switchMap((params: any) => this.accountService.getAccount(params.id)),
       tap((account: Account | undefined) => this.accountAmount = account?.amount || 0),
       switchMap((account: Account | undefined) => combineLatest([account ? this.accountService.getAccountOperations(account): of([]), this.filter$])),
       tap(([operations, filter]: [Operation[], OperationFilter]) => this.calculatePointedAmount(operations)),
