@@ -1,0 +1,11 @@
+
+.mat-drawer-container {
+  height: 100vh;
+}
+a.mat-list-item {
+  min-width: 250px;
+  &.list-item-active {
+    color: #673ab7;
+    background-color: #f1f1f1;
+  }
+}

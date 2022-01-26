@@ -4,6 +4,7 @@ import { Account } from '../models/account.model';
 import { from, map, merge, Observable, of, shareReplay, switchMap, take, tap } from 'rxjs';
 import { Operation, OperationStatus } from '../models/operation.model';
 import { NgxSerializerService } from '@witty-services/ngx-serializer';
+import { AccountGroup } from '../models/account-group.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,25 @@ export class AccountService {
       );
     }
     return this.accounts$;
+  }
+
+  getAccountsGroupedByType(): Observable<AccountGroup[]> {
+    return this.getAccounts().pipe(
+      map((accounts: Account[]) => {
+        return accounts.reduce((acc: AccountGroup[], account: Account) => {
+          let group = acc.find((acc: AccountGroup) => acc.type === account.type);
+          if (!group) {
+            group = {
+              type: account.type,
+              accounts: []
+            };
+            acc.push(group);
+          }
+          group.accounts.push(account);
+          return acc;
+        }, [] as AccountGroup[])
+      })
+    );
   }
 
   getAccount(documentId: string): Observable<Account | undefined> {

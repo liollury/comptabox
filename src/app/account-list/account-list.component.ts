@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../services/account.service';
 import { map, Observable } from 'rxjs';
 import { Account, AccountTypeI18N } from '../models/account.model';
+import { AccountGroup } from '../models/account-group.interface';
 
-interface AccountGroup {
-  type: string;
-  accounts: Account[];
-}
+
 
 @Component({
   selector: 'app-account-list',
@@ -22,22 +20,7 @@ export class AccountListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.accountGroups$ = this.accountService.getAccounts().pipe(
-      map((accounts: Account[]) => {
-        return accounts.reduce((acc: AccountGroup[], account: Account) => {
-          let group = acc.find((acc: AccountGroup) => acc.type === account.type);
-          if (!group) {
-            group = {
-              type: account.type,
-              accounts: []
-            };
-            acc.push(group);
-          }
-          group.accounts.push(account);
-          return acc;
-        }, [] as AccountGroup[])
-      })
-    );
+    this.accountGroups$ = this.accountService.getAccountsGroupedByType();
   }
 
   getPointedTotal(group: AccountGroup): number {

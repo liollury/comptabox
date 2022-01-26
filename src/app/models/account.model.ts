@@ -6,6 +6,12 @@ export const AccountTypeI18N = {
   other: 'Autre',
 };
 
+export const AccountTypeIcon = {
+  account: 'credit_card',
+  saving: 'savings',
+  other: 'euro',
+};
+
 export class Account {
   @JsonProperty()
   documentId: string;
