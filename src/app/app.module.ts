@@ -38,6 +38,7 @@ import { AngularFireAuthModule, PERSISTENCE } from '@angular/fire/compat/auth';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { PlannedOperationListComponent } from './planned-operation-list/planned-operation-list.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -77,7 +78,13 @@ registerLocaleData(localeFr, 'fr');
     MatIconModule,
     MatMenuModule,
     MatSlideToggleModule,
-    MatSidenavModule
+    MatSidenavModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     {

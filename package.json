@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy":  "ng deploy"
+    "deploy": "ng deploy"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +22,7 @@
     "@angular/platform-browser": "~13.1.0",
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
+    "@angular/service-worker": "~13.1.0",
     "@tabuckner/material-dayjs-adapter": "^1.1.0",
     "@witty-services/ngx-serializer": "^1.0.6",
     "@witty-services/ts-serializer": "^1.0.8",
