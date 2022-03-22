@@ -29,7 +29,8 @@ import { PlannedOperationService } from '../services/planned-operation.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 class OperationFilter {
-  pointedOperationFilter: boolean;
+  pointedOperationFilter = false;
+  monthToShow = 4;
 }
 
 @Component({
@@ -41,6 +42,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   OperationStatus = OperationStatus;
   OperationTypeI18N = OperationTypeI18N;
   displayedColumns = ['date', 'description', 'type', 'amount', 'pointed', 'globalAmount', 'actions'];
+  account: Account | undefined;
   accountDocumentId: string;
   operations$: Observable<Operation[]>;
   categories: Category[] = [];
@@ -48,10 +50,10 @@ export class AccountComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject();
   pointedAmount: number;
   theoricalAmount: number;
-  accountAmount: number;
   closedAmount: number;
   months: Dayjs[] = [];
-  filter$: BehaviorSubject<OperationFilter> = new BehaviorSubject<OperationFilter>({pointedOperationFilter: false});
+  filter: OperationFilter = new OperationFilter();
+  filter$: BehaviorSubject<OperationFilter> = new BehaviorSubject<OperationFilter>(this.filter);
 
   constructor(
     protected accountService: AccountService,
@@ -73,14 +75,20 @@ export class AccountComponent implements OnInit, OnDestroy {
       filter((params: any) => !!params['id']),
       tap((params: any) => this.accountDocumentId = params['id']),
       switchMap((params: any) => this.accountService.getAccount(params.id)),
-      tap((account: Account | undefined) => this.accountAmount = account?.amount || 0),
+      tap((account: Account | undefined) => this.account = account),
       switchMap((account: Account | undefined) => combineLatest([account ? this.accountService.getAccountOperations(account): of([]), this.filter$])),
       tap(([operations, filter]: [Operation[], OperationFilter]) => this.calculatePointedAmount(operations)),
       tap(([operations, filter]: [Operation[], OperationFilter]) => this.calculateTheoricalAmount(operations)),
       tap(([operations, filter]: [Operation[], OperationFilter]) => this.calculateClosedAmount(operations)),
-      tap(([operations, filter]: [Operation[], OperationFilter]) => this.computedMonths(operations)),
-      switchMap(([operations, filter]: [Operation[], OperationFilter]) =>
-        this.accountService.updateAccountAmounts(this.accountDocumentId, this.pointedAmount, this.theoricalAmount).pipe(map(() => this.filterOperation(operations, filter)))
+      tap(([operations, filter]: [Operation[], OperationFilter]) => this.computedMonths(operations, filter)),
+      switchMap(([operations, filter]: [Operation[], OperationFilter]) => {
+        const filteredOperations = this.filterOperation(operations, filter);
+          if (this.account?.pointedAmount !== this.pointedAmount || this.account?.theoricalAmount !== this.theoricalAmount) {
+            return this.accountService.updateAccountAmounts(this.accountDocumentId, this.pointedAmount, this.theoricalAmount).pipe(map(() => filteredOperations))
+          } else {
+            return of(filteredOperations);
+          }
+        }
       )
     );
   }
@@ -97,26 +105,28 @@ export class AccountComponent implements OnInit, OnDestroy {
     return operations;
   }
 
-  computedMonths(operations: Operation[]) {
+  computedMonths(operations: Operation[], filter: OperationFilter) {
     this.months = Array.from(new Set(operations.map((operation) => operation.date.format('01-MM-YYYY'))))
       .map((date: string) => dayjs(date, 'DD-MM-YYYY'));
-    this.months = this.months.slice(0, 4);
+    if (!filter.pointedOperationFilter) {
+      this.months = this.months.slice(0, filter.monthToShow);
+    }
   }
 
   calculatePointedAmount(operations: Operation[]) {
     this.pointedAmount = operations.filter((operation) => operation.status !== OperationStatus.NOT_POINTED)
-        .reduce((acc, curr) => acc + curr.amount, this.accountAmount);
+        .reduce((acc, curr) => acc + curr.amount, this.account?.amount || 0);
   }
 
   calculateTheoricalAmount(operations: Operation[]) {
     const nextMonth = dayjs().startOf('month').add(1, 'month');
     this.theoricalAmount = operations.filter((operation) => operation.date.isBefore(nextMonth))
-      .reduce((acc, curr) => acc + curr.amount, this.accountAmount);
+      .reduce((acc, curr) => acc + curr.amount, this.account?.amount || 0);
   }
 
   calculateClosedAmount(operations: Operation[]) {
     this.closedAmount = operations.filter((operation) => operation.status === OperationStatus.CLOSED)
-      .reduce((acc, curr) => acc + curr.amount, this.accountAmount);
+      .reduce((acc, curr) => acc + curr.amount, this.account?.amount || 0);
   }
 
   getCategory(operation: Operation): string {
@@ -135,6 +145,10 @@ export class AccountComponent implements OnInit, OnDestroy {
         this.accountService.closeOperations(this.accountDocumentId).subscribe();
       }
     });
+  }
+
+  patchFilter() {
+    this.filter$.next(this.filter);
   }
 
   openOperationDialog(action: 'CREATE' | 'UPDATE' | 'CLONE', referenceOperation?: Operation): void {

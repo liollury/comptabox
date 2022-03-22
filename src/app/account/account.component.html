@@ -1,22 +1,26 @@
 <div class="account-section">
-  <div class="part">
-    <h1>{{accountsNameMap?.get(accountDocumentId)}}</h1>
-    <div>Solde pointé : <span class="bold">{{pointedAmount | currency}}</span></div>
-    <div>Solde rapproché : <span class="bold">{{closedAmount | currency}}</span></div>
-    <a class="rapprocher" (click)="closeOperationDialog()">
-      <mat-icon>arrow_forward</mat-icon>
-      Rapprocher
-    </a>
+  <h1>{{accountsNameMap?.get(accountDocumentId)}}</h1>
+  <div class="parts">
+    <div class="part">
+      <div>Solde pointé : <span class="bold">{{pointedAmount | currency}}</span></div>
+      <div>Solde rapproché : <span class="bold">{{closedAmount | currency}}</span></div>
+      <a class="rapprocher" (click)="closeOperationDialog()">
+        <mat-icon>arrow_forward</mat-icon>
+        Rapprocher
+      </a>
+    </div>
+    <div class="part">
+      <span class="solde"><span>Solde fin du mois&nbsp;:&nbsp;</span><span [class.negative]="theoricalAmount < 0" [class.positive]="theoricalAmount >= 0">{{theoricalAmount | currency}}</span></span>
+    </div>
   </div>
-
-  <div class="part">
-    <span class="solde"><span>Solde fin du mois&nbsp;:&nbsp;</span><span [class.negative]="theoricalAmount < 0" [class.positive]="theoricalAmount >= 0">{{theoricalAmount | currency}}</span></span>
-  </div>
-
 </div>
 <div class="actions-container">
   <button mat-raised-button color="primary" (click)="openOperationDialog('CREATE')">Ajouter une operation</button>
-  <mat-slide-toggle (change)="filter$.next({pointedOperationFilter: $event.source.checked})">Opération non pointé</mat-slide-toggle>
+  <mat-slide-toggle [(ngModel)]="filter.pointedOperationFilter" (change)="patchFilter()">Opération non pointé</mat-slide-toggle>
+  <mat-form-field appearance="fill" class="hide-mobile">
+    <mat-label>Nombre de mois affichés</mat-label>
+    <input type="number" matInput [(ngModel)]="filter.monthToShow" (change)="patchFilter()" />
+  </mat-form-field>
 </div>
 
 <ng-container *ngIf="operations$ | async as operations">

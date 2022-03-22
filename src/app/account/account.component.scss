@@ -1,14 +1,19 @@
 @import "../../css/breakpoints";
 @import "../../css/icons";
 
+.hide-mobile {
+  @include breakpoint(mobileonly) {
+    display: none;
+  }
+}
+
 .account-section {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
   border: 1px solid lightgrey;
   margin: 30px 20px;
-  padding: 24px 0;
+  padding: 24px 10px;
   @include breakpoint(phablet) {
     padding: 24px;
   }
@@ -16,6 +21,19 @@
   h1 {
     color: #673ab7;
     font-weight: 500;
+  }
+
+  .parts {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    @include breakpoint(mobileonly) {
+      flex-direction: column;
+
+      .part:not(:first-child) {
+        margin-top: 20px;
+      }
+    }
   }
 
   .bold {
