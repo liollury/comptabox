@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Operation, OperationStatus, OperationType } from '../models/operation.model';
 import * as dayjs from 'dayjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./edit-operation-dialog.component.scss']
 })
 export class EditOperationDialogComponent implements OnInit, OnDestroy {
-  form: FormGroup;
+  form: UntypedFormGroup;
   categories: Category[];
   subCategories: Category[];
   prefilledSubCat: number | null;
@@ -29,24 +29,24 @@ export class EditOperationDialogComponent implements OnInit, OnDestroy {
     this.dialogData = data;
   }
 
-  get plannedFormControl(): FormControl {
-    return this.form.controls['planned'] as FormControl;
+  get plannedFormControl(): UntypedFormControl {
+    return this.form.controls['planned'] as UntypedFormControl;
   }
 
   ngOnInit(): void {
     this.subCategories = [];
-    this.form = new FormGroup({
-      date: new FormControl(dayjs(), [Validators.required]),
-      type: new FormControl(OperationType.CB, [Validators.required]),
-      status: new FormControl(OperationStatus.NOT_POINTED, [Validators.required]),
-      amount: new FormControl(0, [Validators.required]),
-      way: new FormControl('DEBIT', [Validators.required]),
-      category: new FormControl(null),
-      subcategory: new FormControl(null),
-      accountRef: new FormControl(null),
-      info: new FormControl(''),
-      planned: new FormControl(false),
-      addToAccountAt: new FormControl(dayjs(), [Validators.required]),
+    this.form = new UntypedFormGroup({
+      date: new UntypedFormControl(dayjs(), [Validators.required]),
+      type: new UntypedFormControl(OperationType.CB, [Validators.required]),
+      status: new UntypedFormControl(OperationStatus.NOT_POINTED, [Validators.required]),
+      amount: new UntypedFormControl(0, [Validators.required]),
+      way: new UntypedFormControl('DEBIT', [Validators.required]),
+      category: new UntypedFormControl(null),
+      subcategory: new UntypedFormControl(null),
+      accountRef: new UntypedFormControl(null),
+      info: new UntypedFormControl(''),
+      planned: new UntypedFormControl(false),
+      addToAccountAt: new UntypedFormControl(dayjs(), [Validators.required]),
     });
     this.listenCategoryChange();
     this.listenPlannedChange();
