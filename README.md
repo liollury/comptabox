@@ -24,6 +24,8 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 ## Deployment on firebase
 
+***First time on this computer, run `firebase login`***
+
 Run `ng deploy` to deploy on firebase hosting
 
 ## Further help
