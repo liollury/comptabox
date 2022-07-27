@@ -24,6 +24,11 @@ const account: Route = {
   }
 };
 
+const charts: Route = {
+  path: 'charts',
+  loadChildren: () => import('./charts/charts.module').then((m) => m.ChartsModule)
+};
+
 const plannedOperationList: Route = {
   path: 'planned-operations',
   component: PlannedOperationListComponent,
@@ -47,4 +52,4 @@ const defaultRoute: Route = {
   redirectTo: '/list'
 };
 
-export const routes: Routes = [accountList, plannedOperationList, account, login, defaultRoute];
+export const routes: Routes = [accountList, plannedOperationList, account, login, charts, defaultRoute];

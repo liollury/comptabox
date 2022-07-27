@@ -19,8 +19,29 @@
   }
 
   h1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     color: #673ab7;
     font-weight: 500;
+    .mini-fab {
+      width: 30px;
+      height: 30px;
+      line-height: 14px;
+      font-size: 14px;
+      margin-left: 15px;
+
+      &::ng-deep .mat-button-wrapper{
+        line-height: 14px;
+        padding: 0;
+
+        .mat-icon {
+          font-size: 20px;
+          padding-top: 4px;
+        }
+      }
+    }
+
   }
 
   .parts {

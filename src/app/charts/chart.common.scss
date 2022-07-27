@@ -1,0 +1,32 @@
+@import "../../css/breakpoints";
+
+.chart {
+  padding: 30px;
+  @include breakpoint(mobileonly) {
+    padding: 5px;
+  }
+  h1 {
+    color: #673ab7;
+    font-weight: 500;
+  }
+}
+
+
+.infos-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  .infos {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    p {
+      strong {
+        color: #673ab7;
+        font-weight: 500;
+      }
+    }
+  }
+}

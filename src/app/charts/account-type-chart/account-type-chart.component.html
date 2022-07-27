@@ -1,0 +1,13 @@
+<div class="chart">
+  <h1>Evolution de {{AccountTypeI18N[accountType]}}</h1>
+
+  <div echarts *ngIf="options$ | async as options" [options]="options"></div>
+
+  <div class="infos-container">
+    <div class="infos">
+      <p>Moyenne : <strong>{{average}}</strong>€</p>
+      <p>Min : <strong>{{min}}</strong>€</p>
+      <p>Max : <strong>{{max}}</strong>€</p>
+    </div>
+  </div>
+</div>

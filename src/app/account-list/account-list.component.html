@@ -2,7 +2,10 @@
   <ng-container *ngIf="accountGroups$ | async as accountGroups">
     <div *ngFor="let accountGroup of accountGroups">
       <div class="header">
-        <h2 class="name">{{AccountTypeI18N[accountGroup.type]}}</h2>
+        <h2 class="name">
+          {{AccountTypeI18N[accountGroup.type]}}
+          <button mat-mini-fab color="primary" class="mini-fab" [routerLink]="['/charts/account-type-chart', accountGroup.type]"><mat-icon fontIcon="show_chart"></mat-icon></button>
+        </h2>
         <div class="amount total">Solde pointé</div>
         <div class="amount total">Solde fin de mois</div>
       </div>

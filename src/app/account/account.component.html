@@ -1,5 +1,7 @@
 <div class="account-section">
-  <h1>{{accountsNameMap?.get(accountDocumentId)}}</h1>
+  <h1>{{accountsNameMap?.get(accountDocumentId)}}
+    <button mat-mini-fab color="primary" class="mini-fab" [routerLink]="['/charts/account-chart', accountDocumentId]"><mat-icon fontIcon="show_chart"></mat-icon></button>
+  </h1>
   <div class="parts">
     <div class="part">
       <div>Solde pointé : <span class="bold">{{pointedAmount | currency}}</span></div>
