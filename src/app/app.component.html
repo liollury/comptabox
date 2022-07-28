@@ -9,6 +9,7 @@
 
     <mat-nav-list>
       <a mat-list-item
+         (click)="drawer.close()"
          [routerLink]="['/list']"
          routerLinkActive="list-item-active">
         <mat-icon matListIcon> list_alt </mat-icon>
@@ -16,6 +17,7 @@
       </a>
 
       <a mat-list-item
+         (click)="drawer.close()"
          [routerLink]="['/planned-operations']"
          routerLinkActive="list-item-active">
         <mat-icon matListIcon> schedule </mat-icon>
@@ -27,6 +29,7 @@
           <h3 matSubheader>{{AccountTypeI18N[accountGroup.type]}}</h3>
           <a *ngFor="let account of accountGroup.accounts"
             mat-list-item
+             (click)="drawer.close()"
             [routerLink]="['/account', account.documentId]"
             routerLinkActive="list-item-active">
             <mat-icon matListIcon> {{ AccountTypeIcon[accountGroup.type] }} </mat-icon>
