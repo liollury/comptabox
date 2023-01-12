@@ -30,4 +30,7 @@ export class Account {
 
   @JsonProperty()
   theoricalAmount: number;
+
+  @JsonProperty()
+  archived: boolean;
 }

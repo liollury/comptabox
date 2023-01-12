@@ -9,11 +9,13 @@
         <div class="amount total">Solde pointé</div>
         <div class="amount total">Solde fin de mois</div>
       </div>
-      <a mat-list-item [routerLink]="['/account', account.documentId]" *ngFor="let account of accountGroup.accounts">
-        <div class="name">{{account.name}}</div>
-        <div class="amount curr">{{account.pointedAmount | currency}}</div>
-        <div class="amount prev">{{account.theoricalAmount | currency}}</div>
-      </a>
+      <ng-container *ngFor="let account of accountGroup.accounts">
+        <a mat-list-item [routerLink]="['/account', account.documentId]" *ngIf="!account.archived">
+          <div class="name">{{account.name}}</div>
+          <div class="amount curr">{{account.pointedAmount | currency}}</div>
+          <div class="amount prev">{{account.theoricalAmount | currency}}</div>
+        </a>
+      </ng-container>
       <mat-list-item>
         <div class="name"></div>
         <div class="amount total">{{getPointedTotal(accountGroup) | currency}}</div>
