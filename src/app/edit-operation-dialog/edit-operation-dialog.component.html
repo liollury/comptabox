@@ -24,7 +24,7 @@
         <mat-label>Vers</mat-label>
         <mat-select formControlName="accountRef">
           <mat-option [value]="null">Aucun</mat-option>
-          <mat-option *ngFor="let account of dialogData.accounts | keyvalue" [value]="account.key">{{account.value}}</mat-option>
+          <mat-option *ngFor="let account of dialogData.accounts | keyvalue: originalOrder" [value]="account.key">{{account.value}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

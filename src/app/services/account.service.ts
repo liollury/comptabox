@@ -25,6 +25,7 @@ export class AccountService {
     if (!this.accounts$) {
       this.accounts$ = this.db.collection<Account>('accounts').valueChanges({idField: 'documentId'}).pipe(
         map((accountsObj: any[]) => this.serializer.deserializeAll(Account, accountsObj)),
+        map((accounts: Account[]) => accounts.sort((acc1: Account, acc2: Account) => acc1.name > acc2.name ? 1: -1)),
         shareReplay(1)
       );
     }
@@ -32,6 +33,7 @@ export class AccountService {
   }
 
   getAccountsGroupedByType(): Observable<AccountGroup[]> {
+    const typeOrder = ['account', 'saving', 'other'];
     return this.getAccounts().pipe(
       map((accounts: Account[]) => {
         return accounts.reduce((acc: AccountGroup[], account: Account) => {
@@ -45,7 +47,7 @@ export class AccountService {
           }
           group.accounts.push(account);
           return acc;
-        }, [] as AccountGroup[])
+        }, [] as AccountGroup[]).sort((acc1: AccountGroup, acc2: AccountGroup) => typeOrder.indexOf(acc1.type) > typeOrder.indexOf(acc2.type) ? 1 : -1)
       })
     );
   }

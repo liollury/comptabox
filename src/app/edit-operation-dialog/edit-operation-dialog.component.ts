@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Operation, OperationStatus, OperationType } from '../models/operation.model';
@@ -27,6 +28,10 @@ export class EditOperationDialogComponent implements OnInit, OnDestroy {
   ) {
     this.categories = data.categories.sort((cat1: Category, cat2: Category) => cat1.name < cat2.name ? -1 : 1);
     this.dialogData = data;
+  }
+
+  originalOrder(a: KeyValue<string,string>, b: KeyValue<string,string>): number {
+    return 0;
   }
 
   get plannedFormControl(): UntypedFormControl {
